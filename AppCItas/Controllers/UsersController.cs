@@ -1,14 +1,12 @@
-﻿using AppCItas.Data;
+﻿using AppCitas.Controllers;
+using AppCItas.Data;
 using AppCItas.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppCItas.Controllers; 
 
-[Route("api/[controller]")]
-
-[ApiController]
-public class UsersController : ControllerBase
+public class UsersController : BaseApiController
 {
     private readonly DataContext _context; 
     public UsersController(DataContext context) 
