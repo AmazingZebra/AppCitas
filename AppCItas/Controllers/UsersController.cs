@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace AppCItas.Controllers;
 
@@ -37,5 +38,21 @@ public class UsersController : BaseApiController
     {
         return await _userRepository.GetMemberAsync(username);
 
+    }
+    [HttpPut]
+    public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+    {
+        var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user =await _userRepository.GetUserByUsernameAsync(username);
+        if (user == null) return NotFound();
+
+        _mapper.Map(memberUpdateDto,user);
+
+
+
+
+        if (await _userRepository.SaveAllSync()) return NoContent();
+
+        return BadRequest("No se puede realizar la operación");
     }
 }

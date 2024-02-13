@@ -51,6 +51,12 @@ public class UserRepository:IUserRepository
     {
         return await _context.SaveChangesAsync() > 0;
     }
+
+    public Task<bool> SaveAllSync()
+    {
+        throw new NotImplementedException();
+    }
+
     public void Update(AppUser user)
     {
         _context.Entry(user).State = EntityState.Modified;
