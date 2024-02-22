@@ -39,20 +39,18 @@ public class UsersController : BaseApiController
         return await _userRepository.GetMemberAsync(username);
 
     }
-    [HttpPut]
+     [HttpPut]
     public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
     {
         var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var user =await _userRepository.GetUserByUsernameAsync(username);
+        var user = await _userRepository.GetUserByUsernameAsync(username);
+
         if (user == null) return NotFound();
 
-        _mapper.Map(memberUpdateDto,user);
+        _mapper.Map(memberUpdateDto, user);
 
+        if (await _userRepository.SaveAllAsync()) return NoContent();
 
-
-
-        if (await _userRepository.SaveAllSync()) return NoContent();
-
-        return BadRequest("No se puede realizar la operación");
+        return BadRequest("No se pudo realizar la operación");
     }
 }
